@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0a0f" />
+    <title>Frosky</title>
+    <!-- Bootstrap Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+    />
+    <!-- Google Fonts: only what we need -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>"
+    />
+    <link rel="preload" as="image" href="Images/bg_hq.webp" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- Splash Screen -->
+    <div id="splash" role="button" tabindex="0" aria-label="Click to enter">
+      <div class="splash-inner">
+        <div class="splash-logo">F</div>
+        <p class="splash-text">click to enter</p>
+        <div class="splash-line"></div>
+      </div>
+    </div>
+
+    <!-- Main Content -->
+    <div id="main-content" aria-hidden="true">
+      <!-- Background image layer -->
+      <div class="bg-layer" aria-hidden="true"></div>
+      <!-- Gradient overlay -->
+      <div class="bg-overlay" aria-hidden="true"></div>
+
+      <!-- Snow Canvas — must be inside main-content, above overlay -->
+      <canvas id="snowCanvas" aria-hidden="true"></canvas>
+
+      <!-- Audio -->
+      <audio id="bg-audio" loop preload="none">
+        <source
+          src="audio/WhatsApp Audio 2026-05-17 at 12.22.15 PM.mpeg"
+          type="audio/mpeg"
+        />
+      </audio>
+
+      <!-- Volume Control -->
+      <div
+        class="volume-control"
+        id="volumeControl"
+        role="region"
+        aria-label="Volume control"
+      >
+        <button class="vol-btn" id="volBtn" aria-label="Toggle volume">
+          <i class="bi bi-volume-up-fill" id="volumeIcon"></i>
+        </button>
+        <div class="slider-wrap">
+          <input
+            type="range"
+            id="volumeSlider"
+            min="0"
+            max="1"
+            step="0.01"
+            value="1"
+            aria-label="Volume"
+          />
+        </div>
+      </div>
+
+      <!-- Profile Card -->
+      <main class="profile-card" role="main">
+        <!-- Decorative ring -->
+        <div class="deco-ring" aria-hidden="true"></div>
+
+        <!-- Name -->
+        <h1 class="glow-name">Frosky</h1>
+
+        <!-- Tagline -->
+        <p class="tagline">with great power comes great responsibility</p>
+
+        <!-- Avatar + Username Box -->
+        <div class="user-box">
+          <div class="avatar-wrap">
+            <img
+              id="discord-avatar"
+              src=""
+              alt="Frosky profile picture"
+              onerror="
+                this.src = 'https://cdn.discordapp.com/embed/avatars/0.png'
+              "
+              width="60"
+              height="60"
+              loading="eager"
+              decoding="async"
+            />
+            <!-- Avatar decoration overlay -->
+            <img
+              id="discord-decoration"
+              class="avatar-decoration"
+              src=""
+              alt=""
+              aria-hidden="true"
+              style="display: none"
+            />
+            <div class="avatar-ring" aria-hidden="true"></div>
+            <!-- Live Discord status dot -->
+            <div
+              id="status-dot"
+              class="status-dot status-offline"
+              aria-label="Status: offline"
+            ></div>
+            <!-- Platform badge: mobile / desktop / web -->
+            <div
+              id="platform-badge"
+              class="platform-badge"
+              style="display: none"
+              aria-hidden="true"
+            >
+              <i class="platform-icon"></i>
+            </div>
+          </div>
+          <div class="user-info">
+            <div class="username">frosky.e</div>
+            <div class="bio">he / him</div>
+            <div id="discord-activity" class="discord-activity"></div>
+          </div>
+        </div>
+
+        <!-- Divider -->
+        <div class="divider" aria-hidden="true"></div>
+
+        <!-- Social Icons -->
+        <div class="social-icons" role="list">
+          <a
+            href="https://discord.com/users/1090116632380186695"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-btn discord-link"
+            role="listitem"
+            aria-label="Discord"
+          >
+            <i class="bi bi-discord"></i>
+          </a>
+          <a
+            href="https://open.spotify.com/user/31b7bd3fnn25n7rdk5kdjbb6voiu?si=fc29c76b559b4a4b"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-btn spotify-link"
+            role="listitem"
+            aria-label="Spotify"
+          >
+            <i class="bi bi-spotify"></i>
+          </a>
+        </div>
+
+        <!-- View Counter -->
+        <div class="views" aria-live="polite">
+          <i class="bi bi-eye-fill"></i>
+          <span id="view-count">—</span>
+        </div>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="snow.js" defer></script>
+    <script src="script.js" defer></script>
+  </body>
+</html>
