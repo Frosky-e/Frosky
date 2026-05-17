@@ -1,33 +1,49 @@
 const { createClient } = require("@supabase/supabase-js");
 
-const supabase = createClient(
-  process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
-);
-
 exports.handler = async (event) => {
   try {
-    // Read current count
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_ANON_KEY;
+
+    if (!supabaseUrl || !supabaseKey) {
+      return {
+        statusCode: 500,
+        body: JSON.stringify({
+          error: "Missing Supabase env variables",
+        }),
+      };
+    }
+
+    const supabase = createClient(supabaseUrl, supabaseKey);
+
+    // GET current count
+    if (event.httpMethod === "GET") {
+      const { data, error } = await supabase
+        .from("site_views")
+        .select("count")
+        .eq("id", 1)
+        .single();
+
+      if (error) throw error;
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          count: data?.count ?? 0,
+        }),
+      };
+    }
+
+    // POST increment
     const { data, error } = await supabase
       .from("site_views")
-      .select("*")
+      .select("count")
       .eq("id", 1)
       .single();
 
     if (error) throw error;
 
-    // GET request
-    if (event.httpMethod === "GET") {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          count: data.count,
-        }),
-      };
-    }
-
-    // POST request → increment
-    const newCount = Number(data.count || 0) + 1;
+    const newCount = (data?.count || 0) + 1;
 
     const { error: updateError } = await supabase
       .from("site_views")
