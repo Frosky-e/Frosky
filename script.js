@@ -273,36 +273,41 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchPresenceREST();
   connectLanyardWS();
 
-  /* ── Page view counter ───────────────────────────────── */
+ /* ── Page view counter ───────────────────────────────── */
 
-  const VISITED_KEY = "frosky_visited_v2";
+const VISITED_KEY = "frosky_visited_v3";
 
-  function showCount(n) {
-    viewCountEl.textContent = Number(n).toLocaleString();
-  }
+async function updateViews() {
+  try {
+    const alreadyVisited = localStorage.getItem(VISITED_KEY);
 
-  const alreadyVisited = localStorage.getItem(VISITED_KEY);
-
-  if (alreadyVisited) {
-    fetch("/.netlify/functions/views")
-      .then((r) => r.json())
-      .then((d) => {
-        showCount(d.count || 0);
-      })
-      .catch(() => {
-        viewCountEl.textContent = "0";
+    // New visitor → increment
+    if (!alreadyVisited) {
+      const postRes = await fetch("/.netlify/functions/views", {
+        method: "POST",
       });
-  } else {
-    fetch("/.netlify/functions/views", {
-      method: "POST",
-    })
-      .then((r) => r.json())
-      .then((d) => {
-        showCount(d.count || 0);
-        localStorage.setItem(VISITED_KEY, "true");
-      })
-      .catch(() => {
-        viewCountEl.textContent = "0";
-      });
+
+      const postData = await postRes.json();
+
+      showCount(postData.count || 0);
+
+      localStorage.setItem(VISITED_KEY, "true");
+    } else {
+      // Existing visitor → just fetch count
+      const getRes = await fetch("/.netlify/functions/views");
+      const getData = await getRes.json();
+
+      showCount(getData.count || 0);
+    }
+  } catch (err) {
+    console.error("View counter error:", err);
+    viewCountEl.textContent = "0";
   }
+}
+
+function showCount(n) {
+  viewCountEl.textContent = Number(n).toLocaleString();
+}
+
+updateViews();
 });
