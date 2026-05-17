@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   /* ── Page view counter ───────────────────────────────── */
 
-  const VISITED_KEY = "frosky_visited";
+  const VISITED_KEY = "frosky_visited_v2";
 
   function showCount(n) {
     viewCountEl.textContent = Number(n).toLocaleString();
