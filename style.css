@@ -1383,13 +1383,80 @@ html {
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
 }
 
+.fav-game-card {
+  position: relative;
+  isolation: isolate;
+
+  transition:
+    border-color 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.55s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.55s ease;
+}
+
+/* premium glow layer */
+.fav-game-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+
+  background: radial-gradient(
+    circle at top,
+    rgba(120, 180, 255, 0.14),
+    transparent 48%
+  );
+
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+/* PREMIUM HOVER — no lifting */
 .fav-game-card:hover {
-  transform: translateY(-8px);
-  border-color: rgba(100, 160, 255, 0.26);
+  transform: none;
+
+  border-color: rgba(140, 190, 255, 0.28);
+
+  background: rgba(12, 28, 72, 0.52);
 
   box-shadow:
-    0 20px 50px rgba(0, 0, 0, 0.38),
-    0 0 40px rgba(100, 160, 255, 0.08);
+    0 0 0 1px rgba(120, 180, 255, 0.08),
+    0 18px 45px rgba(0, 0, 0, 0.26),
+    0 0 45px rgba(90, 150, 255, 0.08);
+}
+
+.fav-game-card:hover::before {
+  opacity: 1;
+}
+
+/* cinematic image hover */
+.fav-game-image {
+  transition:
+    transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+    filter 0.45s ease;
+}
+
+.fav-game-card:hover .fav-game-image {
+  transform: scale(1.06);
+  filter: brightness(1.08) contrast(1.04);
+}
+
+/* title glow */
+.fav-game-card:hover .game-top h3 {
+  text-shadow: 0 0 16px rgba(120, 180, 255, 0.22);
+}
+
+/* tags premium feel */
+.game-tags span {
+  transition:
+    background 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.fav-game-card:hover .game-tags span {
+  background: rgba(100, 160, 255, 0.12);
+  border-color: rgba(120, 180, 255, 0.18);
 }
 
 .game-image-wrap {
