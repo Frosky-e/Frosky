@@ -58,12 +58,15 @@ document.addEventListener("DOMContentLoaded", () => {
   volBtn.addEventListener("click", (e) => {
     e.stopPropagation();
 
+    // First click → only expand smoothly
     if (!volumeControl.classList.contains("expanded")) {
       expandVolume();
+
+      // animation complete hone do
       return;
     }
 
-    // Toggle mute
+    // Expanded hone ke baad hi mute/unmute
     if (audio.muted || audio.volume === 0) {
       audio.muted = false;
       audio.volume = 1;
@@ -111,23 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
     collapseTimer = setTimeout(collapseVolume, 5000);
   });
 
-  /* ── Touch scroll prevention ──────────────────────────── */
-  let touchStartY = 0;
-
-  document.addEventListener(
-    "touchstart",
-    (e) => {
-      touchStartY = e.touches[0].clientY;
-    },
-    { passive: true },
-  );
-
-  document.addEventListener(
+  /* ── Touch scroll: allow on main-content ─────────────── */
+  document.body.addEventListener(
     "touchmove",
     (e) => {
-      const dy = e.touches[0].clientY - touchStartY;
-      // Only allow pull-to-refresh (downward at top); block all else
-      if (!(dy > 0 && window.scrollY === 0)) {
+      const mc = document.getElementById("main-content");
+      if (mc && !mc.contains(e.target)) {
         e.preventDefault();
       }
     },
@@ -273,41 +265,196 @@ document.addEventListener("DOMContentLoaded", () => {
   fetchPresenceREST();
   connectLanyardWS();
 
- /* ── Page view counter ───────────────────────────────── */
+  /* ── Page view counter ───────────────────────────────── */
 
-const VISITED_KEY = "frosky_visited_v3";
+  const VISITED_KEY = "frosky_visited_v3";
 
-async function updateViews() {
-  try {
-    const alreadyVisited = localStorage.getItem(VISITED_KEY);
+  async function updateViews() {
+    try {
+      const alreadyVisited = localStorage.getItem(VISITED_KEY);
 
-    // New visitor → increment
-    if (!alreadyVisited) {
-      const postRes = await fetch("/.netlify/functions/views", {
-        method: "POST",
-      });
+      // New visitor → increment
+      if (!alreadyVisited) {
+        const postRes = await fetch("/.netlify/functions/views", {
+          method: "POST",
+        });
 
-      const postData = await postRes.json();
+        const postData = await postRes.json();
 
-      showCount(postData.count || 0);
+        showCount(postData.count || 0);
 
-      localStorage.setItem(VISITED_KEY, "true");
-    } else {
-      // Existing visitor → just fetch count
-      const getRes = await fetch("/.netlify/functions/views");
-      const getData = await getRes.json();
+        localStorage.setItem(VISITED_KEY, "true");
+      } else {
+        // Existing visitor → just fetch count
+        const getRes = await fetch("/.netlify/functions/views");
+        const getData = await getRes.json();
 
-      showCount(getData.count || 0);
+        showCount(getData.count || 0);
+      }
+    } catch (err) {
+      console.error("View counter error:", err);
+      viewCountEl.textContent = "0";
     }
-  } catch (err) {
-    console.error("View counter error:", err);
-    viewCountEl.textContent = "0";
   }
-}
 
-function showCount(n) {
-  viewCountEl.textContent = Number(n).toLocaleString();
-}
+  function showCount(n) {
+    viewCountEl.textContent = Number(n).toLocaleString();
+  }
 
-updateViews();
+  updateViews();
+
+  /* ── Gamer stat → smooth scroll to Games ── */
+
+  const gamerStat = document.querySelector(".gamer-stat");
+  const gamesSection = document.getElementById("games");
+
+  if (gamerStat && gamesSection) {
+    gamerStat.addEventListener("click", () => {
+      targetScroll = gamesSection.offsetTop;
+
+      if (!isAnimating) {
+        smoothScroll();
+      }
+    });
+  }
+
+  /* ── About nav → smooth scroll ──────────────────────────── */
+  const aboutBtn = document.querySelector('.nav-link[href="#about"]');
+  if (aboutBtn) {
+    aboutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        document.getElementById("main-content").scrollTo({
+          top: aboutSection.offsetTop,
+          behavior: "smooth",
+        });
+      }
+    });
+  }
+
+  /* ── Back to top button (butter smooth) ─────────────────── */
+  const backToTop = document.getElementById("backToTop");
+
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      // use existing smooth engine
+      targetScroll = 0;
+
+      if (!isAnimating) {
+        smoothScroll();
+      }
+    });
+  }
+
+  /* ── Parallax on About section ───────────────────────────── */
+  const aboutSection = document.getElementById("about");
+  const parallaxBg = document.querySelector(".about-parallax-bg");
+
+  function updateParallax() {
+    if (!aboutSection || !parallaxBg) return;
+    const scrollTop = mainContent.scrollTop;
+    const aboutTop = aboutSection.offsetTop;
+    const offset = (scrollTop - aboutTop) * 0.22;
+    parallaxBg.style.setProperty("--parallax-offset", offset + "px");
+  }
+
+  /* ── IntersectionObserver: trigger about section animations ─ */
+  if (aboutSection) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            aboutSection.classList.add("in-view");
+          }
+        });
+      },
+      { root: mainContent, threshold: 0.15 },
+    );
+    observer.observe(aboutSection);
+    mainContent.addEventListener("scroll", updateParallax, { passive: true });
+  }
+
+  /* ── Butter Smooth Scroll ── */
+
+  let currentScroll = 0;
+  let targetScroll = 0;
+  let isAnimating = false;
+
+  mainContent.addEventListener(
+    "wheel",
+    (e) => {
+      e.preventDefault();
+
+      targetScroll += e.deltaY * 1.05;
+
+      const maxScroll = mainContent.scrollHeight - mainContent.clientHeight;
+
+      targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
+
+      if (!isAnimating) {
+        smoothScroll();
+      }
+    },
+    { passive: false },
+  );
+
+  function smoothScroll() {
+    isAnimating = true;
+
+    const isMobile = window.innerWidth < 768;
+
+    const ease = isMobile ? 0.24 : 0.18;
+
+    currentScroll += (targetScroll - currentScroll) * ease;
+
+    mainContent.scrollTop = currentScroll;
+
+    updateParallax();
+
+    if (Math.abs(targetScroll - currentScroll) > 0.3) {
+      requestAnimationFrame(smoothScroll);
+    } else {
+      currentScroll = targetScroll;
+      mainContent.scrollTop = currentScroll;
+      isAnimating = false;
+    }
+  }
+  /* ── Stable scroll hint animation fix ── */
+
+  const scrollHint = document.querySelector(".scroll-hint");
+
+  function resetScrollHintAnimation() {
+    if (!scrollHint) return;
+
+    const mobile = window.matchMedia("(max-width:768px)").matches;
+
+    // completely reset animation
+    scrollHint.style.animation = "none";
+    scrollHint.style.transform = "translate3d(-50%,0,0)";
+
+    requestAnimationFrame(() => {
+      scrollHint.offsetHeight;
+
+      scrollHint.style.animation = mobile
+        ? "fadeUp 0.6s ease 0.5s both, subtleFloatMobile 5.5s ease-in-out infinite"
+        : "fadeUp 0.6s ease 0.5s both, subtleFloat 4.5s ease-in-out infinite";
+    });
+  }
+
+  /* Tab switch fix */
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      resetScrollHintAnimation();
+    }
+  });
+
+  /* Desktop ↔ Mobile switch fix */
+  window.addEventListener("resize", resetScrollHintAnimation);
+  /* Initial load fix */
+  window.addEventListener("load", () => {
+    requestAnimationFrame(() => {
+      resetScrollHintAnimation();
+    });
+  });
 });

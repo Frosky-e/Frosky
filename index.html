@@ -18,6 +18,9 @@
       rel="stylesheet"
     />
 
+    <link rel="preload" as="image" href="Images/road96.webp" />
+    <link rel="preload" as="image" href="Images/stray.webp" />
+
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❄️</text></svg>"
@@ -77,7 +80,7 @@
       </div>
 
       <!-- Profile Card -->
-      <main class="profile-card" role="main">
+      <main class="profile-card" role="main" id="home">
         <!-- Decorative ring -->
         <div class="deco-ring" aria-hidden="true"></div>
 
@@ -85,7 +88,7 @@
         <h1 class="glow-name">Frosky</h1>
 
         <!-- Tagline -->
-        <p class="tagline">with great power comes great responsibility</p>
+        <p class="tagline">the road is long but the story is worth it</p>
 
         <!-- Avatar + Username Box -->
         <div class="user-box">
@@ -167,7 +170,159 @@
           <i class="bi bi-eye-fill"></i>
           <span id="view-count">—</span>
         </div>
+
+        <!-- Scroll hint -->
+        <div class="scroll-hint" aria-hidden="true">
+          <i class="bi bi-chevron-down"></i>
+          <span>scroll</span>
+        </div>
       </main>
+      <!-- About Section (scrollable, parallax) -->
+      <section class="about-section" id="about" aria-label="About Me">
+        <!-- Parallax bg layer (JS drives translateY) -->
+        <div class="about-parallax-bg" aria-hidden="true"></div>
+
+        <div class="about-section-inner">
+          <!-- Glowing accent line -->
+          <div class="about-accent-line" aria-hidden="true"></div>
+
+          <h2 class="glow-name about-title">About Me</h2>
+          <p class="tagline about-tagline">
+            a little about the guy behind the screen
+          </p>
+
+          <div class="about-box">
+            <p>
+              Hey, I'm <strong>Frosky</strong>. I'm 18, and I enjoy gaming,
+              music, and building cool things online. Passionate about
+              creativity, community, and making unique experiences.
+            </p>
+          </div>
+
+          <div class="about-stats">
+            <div class="about-stat gamer-stat stat-tooltip" tabindex="0">
+              <i class="bi bi-controller"></i>
+              <span>Gamer</span>
+
+              <div class="mini-tooltip">Click to see favorites</div>
+            </div>
+            <div class="about-stat music-stat stat-tooltip">
+              <i class="bi bi-music-note-beamed"></i>
+              <span>Music Lover</span>
+
+              <div class="mini-tooltip">Click for a new vibe</div>
+            </div>
+            <div class="about-stat">
+              <i class="bi bi-code-slash"></i>
+              <span>Builder</span>
+            </div>
+            <div class="about-stat">
+              <i class="bi bi-people-fill"></i>
+              <span>he / him</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Favorite Games Section -->
+      <section class="games-section" id="games">
+        <div class="games-section-inner">
+          <div class="about-accent-line gamer-line"></div>
+
+          <h2 class="glow-name games-title">Favorite Games</h2>
+
+          <p class="tagline games-tagline">
+            stories that actually stayed with me
+          </p>
+
+          <div class="games-grid">
+            <!-- Road 96 -->
+            <article class="fav-game-card">
+              <div class="game-image-wrap">
+                <img
+                  src="Images/road96.webp"
+                  alt="Road 96"
+                  class="fav-game-image"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="game-overlay"></div>
+              </div>
+
+              <div class="fav-game-content">
+                <div class="game-top">
+                  <h3>Road 96</h3>
+                  <span class="game-year">2025</span>
+                </div>
+
+                <p class="game-desc">
+                  A journey-driven adventure where every road trip feels unique.
+                  Emotional stories, unforgettable characters, and the freedom
+                  of choice make it one of the most memorable experiences.
+                </p>
+
+                <div class="game-tags">
+                  <span>Adventure</span>
+                  <span>Story Rich</span>
+                  <span>Choices Matter</span>
+                </div>
+              </div>
+            </article>
+
+            <!-- Stray -->
+            <article class="fav-game-card">
+              <div class="game-image-wrap">
+                <img
+                  src="Images/stray.webp"
+                  alt="Stray"
+                  class="fav-game-image"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div class="game-overlay"></div>
+              </div>
+
+              <div class="fav-game-content">
+                <div class="game-top">
+                  <h3>Stray</h3>
+                  <span class="game-year">2026</span>
+                </div>
+
+                <p class="game-desc">
+                  A beautiful cyberpunk world seen through the eyes of a cat.
+                  Atmospheric visuals, emotional storytelling, and a relaxing
+                  yet mysterious journey.
+                </p>
+
+                <div class="game-tags">
+                  <span>Cyberpunk</span>
+                  <span>Atmospheric</span>
+                  <span>Adventure</span>
+                </div>
+              </div>
+            </article>
+          </div>
+          <!-- Scroll back up hint -->
+          <button class="back-to-top" id="backToTop" aria-label="Back to top">
+            <!-- Desktop / Laptop -->
+            <span class="desktop-arrow">
+              <i class="bi bi-chevron-up"></i>
+            </span>
+
+            <!-- Mobile -->
+            <span class="mobile-top-ui">
+              <span class="top-arrow">
+                <i class="bi bi-chevron-double-up"></i>
+              </span>
+
+              <span class="top-text">SCROLL TO TOP</span>
+
+              <span class="top-arrow">
+                <i class="bi bi-chevron-double-up"></i>
+              </span>
+            </span>
+          </button>
+        </div>
+      </section>
     </div>
 
     <!-- Scripts -->

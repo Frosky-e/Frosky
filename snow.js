@@ -7,8 +7,12 @@
 
   /* ── Config ─────────────────────────────────────────────── */
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-  const COUNT = isMobile ? 25 : 70;
-  const SPEED = isMobile ? 0.2 : 0.35;
+  const lowEnd =
+    navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4;
+
+  const COUNT = isMobile ? (lowEnd ? 10 : 18) : lowEnd ? 28 : 42;
+
+  const SPEED = isMobile ? 0.16 : 0.26;
 
   let W = 0,
     H = 0,
@@ -46,7 +50,7 @@
 
   function draw(ts) {
     ctx.clearRect(0, 0, W, H);
-    angle += 0.003;
+    angle += 0.0018;
 
     for (let i = 0; i < flakes.length; i++) {
       const f = flakes[i];
