@@ -28,6 +28,14 @@
     },
   ];
 
+  // ── PRELOAD BACKGROUND IMAGES ──
+  const preloadImages = ["Images/bg_hq.webp", "Images/stray3.webp"];
+
+  preloadImages.forEach((src) => {
+    const img = new Image();
+    img.src = src;
+  });
+
   /* ── DOM refs ──────────────────────────────────────────── */
   const audio = document.getElementById("bg-audio");
   if (!audio) return;
