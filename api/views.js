@@ -1,23 +1,20 @@
 const { createClient } = require("@supabase/supabase-js");
 
-exports.handler = async (event) => {
+module.exports = async (req, res) => {
   try {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseKey = process.env.SUPABASE_ANON_KEY;
 
     if (!supabaseUrl || !supabaseKey) {
-      return {
-        statusCode: 500,
-        body: JSON.stringify({
-          error: "Missing Supabase env variables",
-        }),
-      };
+      return res.status(500).json({
+        error: "Missing Supabase env variables",
+      });
     }
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
     // GET current count
-    if (event.httpMethod === "GET") {
+    if (req.method === "GET") {
       const { data, error } = await supabase
         .from("site_views")
         .select("count")
@@ -26,12 +23,9 @@ exports.handler = async (event) => {
 
       if (error) throw error;
 
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          count: data?.count ?? 0,
-        }),
-      };
+      return res.status(200).json({
+        count: data?.count ?? 0,
+      });
     }
 
     // POST increment
@@ -52,18 +46,12 @@ exports.handler = async (event) => {
 
     if (updateError) throw updateError;
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        count: newCount,
-      }),
-    };
+    return res.status(200).json({
+      count: newCount,
+    });
   } catch (err) {
-    return {
-      statusCode: 500,
-      body: JSON.stringify({
-        error: err.message,
-      }),
-    };
+    return res.status(500).json({
+      error: err.message,
+    });
   }
 };
