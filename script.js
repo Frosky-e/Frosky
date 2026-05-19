@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // New visitor → increment
       if (!alreadyVisited) {
-        const postRes = await fetch("/.netlify/functions/views", {
+        const postRes = await fetch("/api/views", {
           method: "POST",
         });
 
@@ -286,7 +286,7 @@ document.addEventListener("DOMContentLoaded", () => {
         localStorage.setItem(VISITED_KEY, "true");
       } else {
         // Existing visitor → just fetch count
-        const getRes = await fetch("/.netlify/functions/views");
+        const getRes = await fetch("/api/views");
         const getData = await getRes.json();
 
         showCount(getData.count || 0);
