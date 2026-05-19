@@ -163,6 +163,15 @@
           >
             <i class="bi bi-spotify"></i>
           </a>
+          <a
+            href="https://www.instagram.com/deepanshu_004u?igsh=N3FzcjB4eHZkenF3"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="social-btn instagram-link"
+            aria-label="Instagram"
+          >
+            <i class="bi bi-instagram"></i>
+          </a>
         </div>
 
         <!-- View Counter -->
@@ -211,14 +220,6 @@
               <span>Music Lover</span>
 
               <div class="mini-tooltip">Click for a new vibe</div>
-            </div>
-            <div class="about-stat">
-              <i class="bi bi-code-slash"></i>
-              <span>Builder</span>
-            </div>
-            <div class="about-stat">
-              <i class="bi bi-people-fill"></i>
-              <span>he / him</span>
             </div>
           </div>
         </div>
@@ -301,6 +302,110 @@
               </div>
             </article>
           </div>
+        </div>
+      </section>
+      <!-- ═══════════════════════════════════════════════
+     MUSIC SECTION — paste after </section> (games-section)
+     and before closing </div> of #main-content
+════════════════════════════════════════════════ -->
+      <section class="music-section" id="music" aria-label="Music Player">
+        <div class="music-section-inner">
+          <!-- Accent line -->
+          <div class="about-accent-line music-line" aria-hidden="true"></div>
+
+          <h2 class="glow-name music-title">Music</h2>
+          <p class="tagline music-tagline">the soundtrack to my world</p>
+
+          <!-- ── Player Layout ── -->
+          <div class="music-player-wrap">
+            <!-- ── LEFT: Playlist ── -->
+            <aside class="playlist-panel" aria-label="Playlist">
+              <div class="playlist-header">
+                <i class="bi bi-music-note-list"></i>
+                <span>Playlist</span>
+              </div>
+
+              <ul class="playlist" id="playlist" role="list">
+                <!-- Songs injected by music.js -->
+              </ul>
+            </aside>
+
+            <!-- ── RIGHT: Player Controls ── -->
+            <div class="player-panel" role="region" aria-label="Music controls">
+              <!-- Album Art / Visualizer -->
+              <div class="player-art-wrap">
+                <div class="art-spin-ring" aria-hidden="true"></div>
+                <div
+                  class="art-spin-ring art-spin-ring-2"
+                  aria-hidden="true"
+                ></div>
+                <div class="player-art" id="playerArt" aria-hidden="true">
+                  <i class="bi bi-music-note-beamed"></i>
+                </div>
+              </div>
+
+              <!-- Song Info -->
+              <div class="player-info">
+                <div class="player-song-name" id="playerSongName">
+                  Select a song
+                </div>
+                <div class="player-artist" id="playerArtist">—</div>
+              </div>
+
+              <!-- Progress Bar -->
+              <div class="player-progress-wrap" aria-label="Seek">
+                <span class="player-time" id="playerCurrent">0:00</span>
+                <div class="player-progress-track" id="progressTrack">
+                  <div class="player-progress-fill" id="progressFill"></div>
+                  <div class="player-progress-thumb" id="progressThumb"></div>
+                </div>
+                <span class="player-time" id="playerDuration">0:00</span>
+              </div>
+
+              <!-- Controls -->
+              <div class="player-controls">
+                <!-- Prev -->
+                <button
+                  class="ctrl-btn"
+                  id="prevBtn"
+                  aria-label="Previous song"
+                >
+                  <i class="bi bi-skip-start-fill"></i>
+                </button>
+
+                <!-- Play / Pause -->
+                <button
+                  class="ctrl-btn ctrl-play"
+                  id="playPauseBtn"
+                  aria-label="Play"
+                >
+                  <i class="bi bi-play-fill" id="playIcon"></i>
+                </button>
+
+                <!-- Next -->
+                <button class="ctrl-btn" id="nextBtn" aria-label="Next song">
+                  <i class="bi bi-skip-end-fill"></i>
+                </button>
+              </div>
+
+              <!-- Volume row -->
+              <div class="player-vol-row">
+                <button
+                  class="player-vol-icon"
+                  id="playerVolBtn"
+                  aria-label="Mute"
+                >
+                  <i class="bi bi-volume-up-fill" id="playerVolIcon"></i>
+                </button>
+                <div class="player-vol-track" id="playerVolTrack">
+                  <div class="player-vol-fill" id="playerVolFill"></div>
+                  <div class="player-vol-thumb" id="playerVolThumb"></div>
+                </div>
+              </div>
+            </div>
+            <!-- /player-panel -->
+          </div>
+
           <!-- Scroll back up hint -->
           <button class="back-to-top" id="backToTop" aria-label="Back to top">
             <!-- Desktop / Laptop -->
@@ -321,12 +426,15 @@
               </span>
             </span>
           </button>
+          <!-- /music-player-wrap -->
         </div>
+        <!-- /music-section-inner -->
       </section>
     </div>
 
     <!-- Scripts -->
     <script src="snow.js" defer></script>
     <script src="script.js" defer></script>
+    <script src="music.js" defer></script>
   </body>
 </html>

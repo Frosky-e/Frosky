@@ -318,6 +318,21 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  /* ── Music stat → smooth scroll to Music ── */
+
+  const musicStat = document.querySelector(".music-stat");
+  const musicSection = document.getElementById("music");
+
+  if (musicStat && musicSection) {
+    musicStat.addEventListener("click", () => {
+      targetScroll = musicSection.offsetTop + 120;
+
+      if (!isAnimating) {
+        smoothScroll();
+      }
+    });
+  }
+
   /* ── About nav → smooth scroll ──────────────────────────── */
   const aboutBtn = document.querySelector('.nav-link[href="#about"]');
   if (aboutBtn) {
